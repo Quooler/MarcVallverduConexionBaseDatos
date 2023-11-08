@@ -34,8 +34,8 @@ namespace MarcVallverduConexionBaseDatos
 
                     newJob.JobId = (int)reader["job_id"];
                     newJob.JobTitle = reader["job_title"].ToString();
-                    newJob.MinSalary = DALNulls.DBNullToNullDecimal((decimal)reader["min_salary"]);
-                    newJob.MaxSalary = DALNulls.DBNullToNullDecimal((decimal)reader["max_salary"]);
+                    newJob.MinSalary = DALNulls.DBNullToNullDecimal(reader["min_salary"]);
+                    newJob.MaxSalary = DALNulls.DBNullToNullDecimal(reader["max_salary"]);
 
                     jobsList.Add(newJob);
                 }
