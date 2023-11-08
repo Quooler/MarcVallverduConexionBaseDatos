@@ -14,7 +14,6 @@ namespace MarcVallverduConexionBaseDatos
     public class DALJobs
     {
         private Connection conexion = new Connection();
-
         public List<Job> InitListaJobs()
         {
             List<Job> jobsList = new List<Job>();
