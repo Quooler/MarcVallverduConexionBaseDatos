@@ -25,16 +25,17 @@ namespace MarcVallverduConexionBaseDatos
         public FormMenuPrincipal()
         {
             InitializeComponent();
-            ActualizarDatos();
         }
 
         private void ActualizarDatos()
         {
             ltbListaJobs.Items.Clear();
-            dalJobs.InitListaJobs();
+            foreach (Job job in dalJobs.InitListaJobs())
+                ltbListaJobs.Items.Add(job);
 
             ltbListaEmployees.Items.Clear();
-            dalEmployees.InitListaEmployees();
+            foreach (Employee employee in dalEmployees.InitListaEmployees())
+                ltbListaEmployees.Items.Add(employee);
         }
 
         private void butAbrirConexion_Click(object sender, EventArgs e)

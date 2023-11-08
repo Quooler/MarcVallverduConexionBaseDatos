@@ -32,10 +32,10 @@ namespace MarcVallverduConexionBaseDatos
                     Employee newEmployee = new Employee();
 
                     newEmployee.EmployeeId = (int)reader["employee_id"];
-                    newEmployee.FirstName = DALNulls.DBNullToNullString(reader["first_name"]).ToString();
+                    newEmployee.FirstName = DALNulls.DBNullToNullString(reader["first_name"]);
                     newEmployee.LastName = reader["last_name"].ToString();
                     newEmployee.Email = reader["email"].ToString();
-                    newEmployee.PhoneNumber = DALNulls.DBNullToNullString(reader["phone_number"]).ToString();
+                    newEmployee.PhoneNumber = DALNulls.DBNullToNullString(reader["phone_number"]);
                     newEmployee.HireDate = (DateTime)reader["hire_date"];
                     newEmployee.JobId = (int)reader["job_id"];
                     newEmployee.Salary = (decimal)reader["salary"];                   
