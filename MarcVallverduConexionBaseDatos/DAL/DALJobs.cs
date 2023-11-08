@@ -13,23 +13,12 @@ namespace MarcVallverduConexionBaseDatos
 {
     public class DALJobs
     {
-        private List<Job> jobsList;
         private Connection conexion = new Connection();
 
-        public List<Job> JobsList
+        public List<Job> InitListaJobs()
         {
-            get
-            {
-                if (jobsList == null)
-                    jobsList = new List<Job>();
+            List<Job> jobsList = new List<Job>();
 
-                return jobsList;
-            }
-            set { jobsList = value; }
-        }
-
-        public void InitListaJobs()
-        {
             try
             {
                 conexion.NuevaConexion();
@@ -48,10 +37,6 @@ namespace MarcVallverduConexionBaseDatos
                     newJob.MinSalary = DALNulls.DBNullToNullDecimal((decimal)reader["min_salary"]);
                     newJob.MaxSalary = DALNulls.DBNullToNullDecimal((decimal)reader["max_salary"]);
 
-                    foreach (Job existingJob in jobsList)
-                        if (newJob.JobId == existingJob.JobId)
-                            return;
-
                     jobsList.Add(newJob);
                 }
                 reader.Close();
@@ -62,6 +47,8 @@ namespace MarcVallverduConexionBaseDatos
             {
                 MessageBox.Show(ex.ToString());
             }
+
+            return jobsList;
         }
 
         public void CrearNuevoJob(string jobTitle, decimal? minSalary, decimal? maxSalary)
@@ -72,8 +59,32 @@ namespace MarcVallverduConexionBaseDatos
 
                 Job nuevoJob = new Job(jobTitle, minSalary, maxSalary);
 
-                InsertJob(nuevoJob);
-                JobsList.Add(nuevoJob);
+                string query =
+                                @"INSERT INTO jobs(job_title, min_salary, max_salary)
+                                VALUES (@ptitle, @pminsalary, @pmaxsalary);
+                                SELECT SCOPE_IDENTITY();";
+
+                SqlCommand insertar = new SqlCommand(query, conexion.Conexion);
+
+                SqlParameter ptitle = new SqlParameter("@ptitle", SqlDbType.VarChar, 35);
+                insertar.Parameters.Add(ptitle);
+                ptitle.Value = nuevoJob.JobTitle;
+
+                SqlParameter pminsalary = new SqlParameter("@pminsalary", SqlDbType.Decimal);
+                insertar.Parameters.Add(pminsalary);
+                pminsalary.Precision = 8;
+                pminsalary.Scale = 2;
+                pminsalary.Value = DALNulls.NullToDBNullDecimal(nuevoJob.MinSalary);
+
+                SqlParameter pmaxsalary = new SqlParameter("@pmaxsalary", SqlDbType.Decimal);
+                insertar.Parameters.Add(pmaxsalary);
+                pmaxsalary.Precision = 8;
+                pmaxsalary.Scale = 2;
+                pmaxsalary.Value = DALNulls.NullToDBNullDecimal(nuevoJob.MaxSalary);
+
+                //Recuperamos el id del nuevo insert para guardarlo en el programa
+                string id = insertar.ExecuteScalar().ToString();
+                nuevoJob.JobId = int.Parse(id);
 
                 conexion.CerrarConexion();
             }
@@ -81,36 +92,6 @@ namespace MarcVallverduConexionBaseDatos
             {
                 MessageBox.Show(ex.ToString());
             }
-        }
-
-        private void InsertJob(Job job)
-        {
-            string query = 
-                          @"INSERT INTO jobs(job_title, min_salary, max_salary)
-                          VALUES (@ptitle, @pminsalary, @pmaxsalary);
-                          SELECT SCOPE_IDENTITY();";
-
-            SqlCommand insertar = new SqlCommand(query, conexion.Conexion);
-
-            SqlParameter ptitle = new SqlParameter("@ptitle", SqlDbType.VarChar, 35);
-            insertar.Parameters.Add(ptitle);
-            ptitle.Value = job.JobTitle;
-
-            SqlParameter pminsalary = new SqlParameter("@pminsalary", SqlDbType.Decimal);
-            insertar.Parameters.Add(pminsalary);
-            pminsalary.Precision = 8;
-            pminsalary.Scale = 2;
-            pminsalary.Value = DALNulls.NullToDBNullDecimal(job.MinSalary);
-
-            SqlParameter pmaxsalary = new SqlParameter("@pmaxsalary", SqlDbType.Decimal);
-            insertar.Parameters.Add(pmaxsalary);
-            pmaxsalary.Precision = 8;
-            pmaxsalary.Scale = 2;
-            pmaxsalary.Value = DALNulls.NullToDBNullDecimal(job.MaxSalary);
-
-            //Recuperamos el id del nuevo insert para guardarlo en el programa
-            string id = insertar.ExecuteScalar().ToString();
-            job.JobId = int.Parse(id);
         }
     }
 }

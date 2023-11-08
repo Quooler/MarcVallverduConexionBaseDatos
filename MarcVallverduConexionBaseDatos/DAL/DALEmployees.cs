@@ -13,22 +13,11 @@ namespace MarcVallverduConexionBaseDatos
     public class DALEmployees
     {
         private Connection conexion = new Connection();
-        private List<Employee> employeesList;
 
-        public List<Employee> EmployeesList
+        public List<Employee> InitListaEmployees()
         {
-            get
-            {
-                if (employeesList == null)
-                    employeesList = new List<Employee>();
+            List<Employee> employeesList = new List<Employee>();
 
-                return employeesList;
-            }
-            set { employeesList = value; }
-        }
-
-        public void InitListaEmployees()
-        {
             try
             {
                 conexion.NuevaConexion();
@@ -43,19 +32,15 @@ namespace MarcVallverduConexionBaseDatos
                     Employee newEmployee = new Employee();
 
                     newEmployee.EmployeeId = (int)reader["employee_id"];
-                    newEmployee.FirstName = DALNulls.DBNullToNull(reader["first_name"]).ToString();
+                    newEmployee.FirstName = DALNulls.DBNullToNullString(reader["first_name"]).ToString();
                     newEmployee.LastName = reader["last_name"].ToString();
                     newEmployee.Email = reader["email"].ToString();
-                    newEmployee.PhoneNumber = DALNulls.DBNullToNull(reader["phone_number"]).ToString();
+                    newEmployee.PhoneNumber = DALNulls.DBNullToNullString(reader["phone_number"]).ToString();
                     newEmployee.HireDate = (DateTime)reader["hire_date"];
                     newEmployee.JobId = (int)reader["job_id"];
                     newEmployee.Salary = (decimal)reader["salary"];                   
-                    newEmployee.ManagerId = DALNulls.DBNullToNullInt((int)reader["manager_id"]);                       
-                    newEmployee.DepartmentId = DALNulls.DBNullToNullInt((int)reader["department_id"]);
-
-                    foreach (Employee existingEmployee in employeesList)
-                        if (newEmployee.JobId == existingEmployee.EmployeeId)
-                            return;
+                    newEmployee.ManagerId = DALNulls.DBNullToNullInt(reader["manager_id"]);                       
+                    newEmployee.DepartmentId = DALNulls.DBNullToNullInt(reader["department_id"]);
 
                     employeesList.Add(newEmployee);
                 }
@@ -67,6 +52,8 @@ namespace MarcVallverduConexionBaseDatos
             {
                 MessageBox.Show(ex.ToString());
             }
+
+            return employeesList;
         }
 
         public List<Employee> FiltrarListaEmployees(string nombre, string apellido, string ciudad)

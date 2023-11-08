@@ -31,12 +31,10 @@ namespace MarcVallverduConexionBaseDatos
         private void ActualizarDatos()
         {
             ltbListaJobs.Items.Clear();
-            foreach (Job job in dalJobs.JobsList)
-                ltbListaJobs.Items.Add(job);
+            dalJobs.InitListaJobs();
 
             ltbListaEmployees.Items.Clear();
-            foreach (Employee employee in dalEmployees.EmployeesList)
-                ltbListaEmployees.Items.Add(employee);
+            dalEmployees.InitListaEmployees();
         }
 
         private void butAbrirConexion_Click(object sender, EventArgs e)

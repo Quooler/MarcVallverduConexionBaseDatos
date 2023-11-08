@@ -22,6 +22,20 @@ namespace MarcVallverduConexionBaseDatos.DAL
             else
                 return val;
         }
+        public static string DBNullToNullString(object val)
+        {
+            if (val == DBNull.Value)
+                return null;
+            else
+                return val.ToString();
+        }
+        public static object NullToDBNullString(string val)
+        {
+            if (val == null)
+                return DBNull.Value;
+            else
+                return val;
+        }
         public static decimal? DBNullToNullDecimal(object val)
         {
             if (val == DBNull.Value)
