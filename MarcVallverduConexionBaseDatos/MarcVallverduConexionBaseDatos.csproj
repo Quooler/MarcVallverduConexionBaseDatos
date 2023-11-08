@@ -46,6 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\Connection.cs" />
+    <Compile Include="DAL\DALNulls.cs" />
+    <Compile Include="Forms\FormCreateEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCreateEmployee.Designer.cs">
+      <DependentUpon>FormCreateEmployee.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormCreateJob.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,11 +66,15 @@
     <Compile Include="Forms\FormMenuPrincipal.Designer.cs">
       <DependentUpon>FormMenuPrincipal.cs</DependentUpon>
     </Compile>
-    <Compile Include="GestorJobs.cs" />
+    <Compile Include="DAL\DALEmployees.cs" />
+    <Compile Include="DAL\DALJobs.cs" />
     <Compile Include="Modelos\Employee.cs" />
     <Compile Include="Modelos\Job.cs" />
     <Compile Include="MarcVallverduConexionBaseDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FormCreateEmployee.resx">
+      <DependentUpon>FormCreateEmployee.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCreateJob.resx">
       <DependentUpon>FormCreateJob.cs</DependentUpon>
     </EmbeddedResource>

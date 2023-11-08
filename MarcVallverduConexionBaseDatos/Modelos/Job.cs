@@ -25,13 +25,6 @@ namespace MarcVallverduConexionBaseDatos
             this.minSalary = minSalary;
             this.maxSalary = maxSalary;
         }
-        public Job(int jobId, string jobTitle, decimal? minSalary, decimal? maxSalary)
-        {
-            this.jobId = jobId;
-            this.jobTitle = jobTitle;
-            this.minSalary = minSalary;
-            this.maxSalary = maxSalary;
-        }
 
         public override string ToString()
         {

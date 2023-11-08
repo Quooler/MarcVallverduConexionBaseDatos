@@ -34,7 +34,7 @@
             this.txbMinSalary = new System.Windows.Forms.TextBox();
             this.labMaxSalary = new System.Windows.Forms.Label();
             this.txbMaxSalary = new System.Windows.Forms.TextBox();
-            this.butCloseConnection = new System.Windows.Forms.Button();
+            this.butClose = new System.Windows.Forms.Button();
             this.butSubmit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -72,6 +72,7 @@
             this.txbMinSalary.Name = "txbMinSalary";
             this.txbMinSalary.Size = new System.Drawing.Size(175, 22);
             this.txbMinSalary.TabIndex = 2;
+            this.txbMinSalary.TextChanged += new System.EventHandler(this.txbMinSalary_TextChanged);
             // 
             // labMaxSalary
             // 
@@ -89,18 +90,19 @@
             this.txbMaxSalary.Name = "txbMaxSalary";
             this.txbMaxSalary.Size = new System.Drawing.Size(175, 22);
             this.txbMaxSalary.TabIndex = 4;
+            this.txbMaxSalary.TextChanged += new System.EventHandler(this.txbMaxSalary_TextChanged);
             // 
-            // butCloseConnection
+            // butClose
             // 
-            this.butCloseConnection.BackColor = System.Drawing.Color.Tomato;
-            this.butCloseConnection.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.butCloseConnection.Location = new System.Drawing.Point(264, 178);
-            this.butCloseConnection.Name = "butCloseConnection";
-            this.butCloseConnection.Size = new System.Drawing.Size(156, 47);
-            this.butCloseConnection.TabIndex = 6;
-            this.butCloseConnection.Text = "Close";
-            this.butCloseConnection.UseVisualStyleBackColor = false;
-            this.butCloseConnection.Click += new System.EventHandler(this.butCloseConnection_Click);
+            this.butClose.BackColor = System.Drawing.Color.Tomato;
+            this.butClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.butClose.Location = new System.Drawing.Point(264, 178);
+            this.butClose.Name = "butClose";
+            this.butClose.Size = new System.Drawing.Size(156, 47);
+            this.butClose.TabIndex = 6;
+            this.butClose.Text = "Close";
+            this.butClose.UseVisualStyleBackColor = false;
+            this.butClose.Click += new System.EventHandler(this.butClose_Click);
             // 
             // butSubmit
             // 
@@ -121,7 +123,7 @@
             this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(451, 259);
             this.Controls.Add(this.butSubmit);
-            this.Controls.Add(this.butCloseConnection);
+            this.Controls.Add(this.butClose);
             this.Controls.Add(this.labMaxSalary);
             this.Controls.Add(this.txbMaxSalary);
             this.Controls.Add(this.labMinSalary);
@@ -143,7 +145,7 @@
         private System.Windows.Forms.TextBox txbMinSalary;
         private System.Windows.Forms.Label labMaxSalary;
         private System.Windows.Forms.TextBox txbMaxSalary;
-        private System.Windows.Forms.Button butCloseConnection;
+        private System.Windows.Forms.Button butClose;
         private System.Windows.Forms.Button butSubmit;
     }
 }

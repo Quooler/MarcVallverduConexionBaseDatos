@@ -14,12 +14,14 @@ namespace MarcVallverduConexionBaseDatos
 {
     public partial class FormMenuPrincipal : Form
     {
-        static public SqlConnection connection = null;
-        static public GestorJobs gestorJobs = new GestorJobs();
-        static public string CONNECTION_STRING = (
-                    @"Data source = 79.143.90.12,54321;
-                    Initial Catalog = MarcVallverduDatabaseEmployees;Persist Security Info=true;
-                    User Id = sa;Password = 123456789");
+        static private Connection conexion = new Connection();
+        static public DALJobs dalJobs = new DALJobs();
+        static public DALEmployees dalEmployees = new DALEmployees();
+        
+        static private string filtroNombre = null;
+        static private string filtroApellido = null;
+        static private string filtroCiudad = null;
+
         public FormMenuPrincipal()
         {
             InitializeComponent();
@@ -29,17 +31,21 @@ namespace MarcVallverduConexionBaseDatos
         private void ActualizarDatos()
         {
             ltbListaJobs.Items.Clear();
-            foreach (Job job in gestorJobs.JobsList)
+            foreach (Job job in dalJobs.JobsList)
                 ltbListaJobs.Items.Add(job);
+
+            ltbListaEmployees.Items.Clear();
+            foreach (Employee employee in dalEmployees.EmployeesList)
+                ltbListaEmployees.Items.Add(employee);
         }
 
         private void butAbrirConexion_Click(object sender, EventArgs e)
         {
             try
             {
-                connection = new SqlConnection(CONNECTION_STRING);
-                connection.Open();
+                conexion.NuevaConexion();
 
+                //Este método ejecuta cambios en la interfaz del menú
                 AbrirConnexionEvents();
             }
             catch (SqlException ex)
@@ -55,14 +61,18 @@ namespace MarcVallverduConexionBaseDatos
             pgbConnection.PerformStep();
             labConexion.Text = "¡Connexión abierta!";
             labConexion.Visible = true;
-            gestorJobs.InitJobsList(connection);
+
+            //Inicializamos las listas para ver todos los componentes
+            dalJobs.InitListaJobs();
+            dalEmployees.InitListaEmployees();
             ActualizarDatos();
         }
 
         private void butCloseConnection_Click(object sender, EventArgs e)
         {
-            connection.Close();
+            conexion.CerrarConexion();
 
+            //Este método ejecuta cambios en la interfaz del menú
             CerrarConnexionEvents();
         }
 
@@ -72,7 +82,8 @@ namespace MarcVallverduConexionBaseDatos
             butNewJob.Enabled = false;
             labConexion.Text = "¡Connexión cerrada!";
             pgbConnection.Value = 0;
-            ActualizarDatos();
+            ltbListaJobs.Items.Clear();
+            ltbListaEmployees.Items.Clear();
         }
 
         private void butNewJob_Click(object sender, EventArgs e)
@@ -80,6 +91,37 @@ namespace MarcVallverduConexionBaseDatos
             FormCreateJob nuevoJob = new FormCreateJob();
             nuevoJob.ShowDialog();
             ActualizarDatos();
+        }
+
+        private void txbNombre_TextChanged(object sender, EventArgs e)
+        {
+            filtroNombre = txbNombre.Text;
+        }
+
+        private void txbApellido_TextChanged(object sender, EventArgs e)
+        {
+            filtroApellido = txbApellido.Text;
+        }
+
+        private void cbbCiudad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filtroCiudad = cbbCiudad.Text;
+        }
+
+        private void butFiltrarEmployees_Click(object sender, EventArgs e)
+        {
+            if (filtroNombre != null || filtroApellido != null || filtroCiudad != null)
+            {
+                ltbListaEmployees.Items.Clear();
+
+                foreach (Employee empleado in dalEmployees.FiltrarListaEmployees(filtroNombre, filtroApellido, filtroCiudad))
+                    ltbListaEmployees.Items.Add(empleado);
+
+                cbbCiudad.Text = null;
+                filtroCiudad = null;
+            }
+            else
+                ActualizarDatos();
         }
 
         private void butCloseApp_Click(object sender, EventArgs e)
